@@ -15,7 +15,7 @@ void insertJurusan(ListParent &LP, string jurusan) {
     cout << "Jurusan '" << jurusan << "' sudah dibuat" << endl;
 }
 
-void insertMatkul(ListChild &LC, string matkul) {
+void insertMatkul(ListChild &LC, string matkul) { //ini pake abcdjnnnifninf
     Child *C = new Child{matkul, LC.first};
     LC.first = C;
     cout << "Mata Kuliah '" << matkul << "' sudah dibuat" << endl;
@@ -293,3 +293,4 @@ void editRelasi(ListRelasi &LR, string oldJurusan, string oldMatkul, Parent *new
     }
     cout << "Relasi tidak ditemukan" << endl;
 }
+

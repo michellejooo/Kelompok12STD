@@ -94,14 +94,14 @@ int main() {
         else if (pil == 11) {
             showMatkul(LC);
         }
-        else if (pil == 12) {
-            cout << "Jurusan: "; getline(cin, jur);
-            showMatkulFromJurusan(LR, jur);
-        }
+       else if (pil == 12) {
+    cout << "Jurusan: "; getline(cin, jur);
+    showMatkulFromJurusan(LP, LR, jur); // Pastikan LP dimasukkan di sini
+}
         else if (pil == 13) {
-            cout << "Matkul: "; getline(cin, mat);
-            showJurusanFromMatkul(LR, mat);
-        }
+    cout << "Matkul: "; getline(cin, mat);
+    showJurusanFromMatkul(LC, LR, mat); // Tambahkan LC di sini
+}
         else if (pil == 14) {
             showAllJurusanMatkul(LR);
         }

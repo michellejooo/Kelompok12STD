@@ -19,7 +19,7 @@ struct Child {
 };
 
 struct Relasi { //Terjadi relasi antara jurusan (parent) dan matkul (child)
-    Parent *parent; 
+    Parent *parent;
     Child *child;
     Relasi *next;
 };
@@ -29,7 +29,7 @@ struct ListChild  { Child  *first; }; //wadah untuk daftar matkul
 struct ListRelasi { Relasi *first; }; //wadah untuk daftar relasi
 
 //list untuk menciptakan jurusan, matkul, relasi
-void createList(ListParent &LP, ListChild &LC, ListRelasi &LR); 
+void createList(ListParent &LP, ListChild &LC, ListRelasi &LR);
 
 
 void insertJurusan(ListParent &LP, string jurusan); //menambahkan jurusan
@@ -50,8 +50,8 @@ bool findRelasi(ListRelasi LR, string jurusan, string matkul); //Mencari apakah 
 void showJurusan(ListParent LP); //Menampilkan jurusan
 void showMatkul(ListChild LC); //Menampilkan matkul
 void showRelasi(ListRelasi LR); //Menampilkan hubungan jurusan dan matkul
-void showMatkulFromJurusan(ListRelasi LR, string jurusan); //Menampilkan matkul dari mengetik jurusan
-void showJurusanFromMatkul(ListRelasi LR, string matkul); //Menampilkan jurusan dari mengetik matkul
+void showMatkulFromJurusan(ListParent LP, ListRelasi LR, string jurusan);
+void showJurusanFromMatkul(ListChild LC, ListRelasi LR, string matkul); //Menampilkan jurusan dari mengetik matkul
 void showAllJurusanMatkul(ListRelasi LR);
 void showAllMatkulJurusan(ListRelasi LR);
 

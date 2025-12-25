@@ -4,25 +4,25 @@
 using namespace std;
 
 void createList(ListParent &LP, ListChild &LC, ListRelasi &LR) {
-    LP.first = NULL;
-    LC.first = NULL;
-    LR.first = NULL;
+    LP.first = NULL; //Terdapat sebelum memulai program belum ada data sama sekali
+    LC.first = NULL; //Terdapat sebelum memulai program belum ada data sama sekali
+    LR.first = NULL; //Terdapat sebelum memulai program belum ada data sama sekali
 }
 
 void insertJurusan(ListParent &LP, string jurusan) {
-    Parent *P = new Parent{jurusan, LP.first};
-    LP.first = P;
+    Parent *P = new Parent{jurusan, LP.first}; //Menambahkan jurusan baru
+    LP.first = P; //Node baru jurusan jadi paling depan
     cout << "Jurusan '" << jurusan << "' sudah dibuat" << endl;
 }
 
 void insertMatkul(ListChild &LC, string matkul) { //ini pake abcdjnnnifninf
-    Child *C = new Child{matkul, LC.first};
-    LC.first = C;
+    Child *C = new Child{matkul, LC.first}; //Menambahkan matkul baru
+    LC.first = C; //Node baru matkul jadi paling depan
     cout << "Mata Kuliah '" << matkul << "' sudah dibuat" << endl;
 }
 
-Parent* findJurusan(ListParent LP, string jurusan) {
-    Parent *P = LP.first;
+Parent* findJurusan(ListParent LP, string jurusan) { //Mencari jurusan
+    Parent *P = LP.first; //Jika ada jurusan yang sudah tersimpan dari menambahkan jurusan tadi, maka jurusan tersebut ditemukan
     while (P) {
         if (P->namaJurusan == jurusan) return P;
         P = P->next;
@@ -31,7 +31,7 @@ Parent* findJurusan(ListParent LP, string jurusan) {
 }
 
 Child* findMatkul(ListChild LC, string matkul) {
-    Child *C = LC.first;
+    Child *C = LC.first; //Jika ada matkul yang sudah tersimpan dari menambahkan matkul tadi, maka matkul tersebut ditemukan
     while (C) {
         if (C->namaMatkul == matkul) return C;
         C = C->next;
@@ -39,13 +39,13 @@ Child* findMatkul(ListChild LC, string matkul) {
     return NULL;
 }
 
-void insertRelasi(ListRelasi &LR, Parent *P, Child *C) {
+void insertRelasi(ListRelasi &LR, Parent *P, Child *C) { //Menambahkan relasi. Menghubungkan jurusan dan matkul, sebelum menghubungkan, jurusan dan matkul tersebut sudah ditambahkan terlebih dahulu
     Relasi *R = new Relasi{P, C, LR.first};
     LR.first = R;
     cout << "Relasi " << P->namaJurusan << " - " << C->namaMatkul << " sudah dibuat" << endl;
 }
 
-bool findRelasi(ListRelasi LR, string jurusan, string matkul) {
+bool findRelasi(ListRelasi LR, string jurusan, string matkul) { //Mencari relasi. Jika ingin menemukan relasi, maka relasi tersebut sudah dihubungkan antara jurusan dan mata kuliah
     Relasi *R = LR.first;
     while (R) {
         if (R->parent->namaJurusan == jurusan &&
@@ -73,7 +73,7 @@ void deleteRelasi(ListRelasi &LR, string jurusan, string matkul) {
     cout << "Tidak ada relasi antara jurusan dan matkul ini" << endl;
 }
 
-void deleteJurusan(ListParent &LP, ListRelasi &LR, string jurusan) {
+void deleteJurusan(ListParent &LP, ListRelasi &LR, string jurusan) { //Menghapus jurusan. Sebelum ingin menghapus jurusan, jurusan tersebut sudah harus ada terlebih dahulu (yaitu sudah ditamabahkan melalui insert jurusan). Jika tidak ada, maka penghapusan jurusan tidak dapat dilakukan.
     Parent *P = LP.first, *prev = NULL;
     while (P) {
         if (P->namaJurusan == jurusan) {
@@ -105,7 +105,7 @@ void deleteMatkul(ListChild &LC, ListRelasi &LR, string matkul) {
     cout << "Matkul tidak ada" << endl;
 }
 
-void showJurusan(ListParent LP) {
+void showJurusan(ListParent LP) { //Menampilkan semua jurusan yang sudah ditambahkan sebelumnya
     Parent *P = LP.first;
     cout << "--- Daftar Jurusan ---" << endl;
     while (P) {
@@ -293,4 +293,5 @@ void editRelasi(ListRelasi &LR, string oldJurusan, string oldMatkul, Parent *new
     }
     cout << "Relasi tidak ditemukan" << endl;
 }
+
 

@@ -50,18 +50,18 @@ bool findRelasi(ListRelasi LR, string jurusan, string matkul); //Mencari apakah 
 void showJurusan(ListParent LP); //Menampilkan jurusan
 void showMatkul(ListChild LC); //Menampilkan matkul
 void showRelasi(ListRelasi LR); //Menampilkan hubungan jurusan dan matkul
-void showMatkulFromJurusan(ListParent LP, ListRelasi LR, string jurusan);
+void showMatkulFromJurusan(ListParent LP, ListRelasi LR, string jurusan); //Meenampilkan matkul dari mengetik jurusan
 void showJurusanFromMatkul(ListChild LC, ListRelasi LR, string matkul); //Menampilkan jurusan dari mengetik matkul
-void showAllJurusanMatkul(ListRelasi LR);
+void showAllJurusanMatkul(ListRelasi LR); 
 void showAllMatkulJurusan(ListRelasi LR);
 
 // count
-int countChildFromParent(ListRelasi LR, string jurusan);
-int countParentFromChild(ListRelasi LR, string matkul);
-int countMatkulNoParent(ListChild LC, ListRelasi LR);
-int countJurusanNoChild(ListParent LP, ListRelasi LR);
+int countChildFromParent(ListRelasi LR, string jurusan); //menghitung jumlah matkul yang dimiliki jurusan
+int countParentFromChild(ListRelasi LR, string matkul); //menghitung jumlah jurusan yang dimiliki matkul
+int countMatkulNoParent(ListChild LC, ListRelasi LR); //menghitung matkul tanpa jurusan
+int countJurusanNoChild(ListParent LP, ListRelasi LR); //menghitung jurusan tanpa matkul
 
 // edit
-void editRelasi(ListRelasi &LR, string oldJurusan, string oldMatkul, Parent *newP, Child *newC);
+void editRelasi(ListRelasi &LR, string oldJurusan, string oldMatkul, Parent *newP, Child *newC); //Mengedit relasi
 
 #endif

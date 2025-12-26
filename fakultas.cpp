@@ -115,7 +115,7 @@ void showJurusan(ListParent LP) { //Menampilkan semua jurusan yang sudah ditamba
     cout << "----------------------" << endl;
 }
 
-void showMatkul(ListChild LC) {
+void showMatkul(ListChild LC) { //Menampilkan semua mata kuliah yang sudah ditambahkan sebelumnya
     Child *C = LC.first;
     cout << "--- Daftar Mata Kuliah ---" << endl;
     while (C) {
@@ -125,7 +125,7 @@ void showMatkul(ListChild LC) {
     cout << "--------------------------" << endl;
 }
 
-void showRelasi(ListRelasi LR) {
+void showRelasi(ListRelasi LR) { //Menampilkan semua relasi jurusan dan mata kuliah yang sudah dihubungkan sebelumnya
     Relasi *R = LR.first;
     while (R) {
         cout << R->parent->namaJurusan << " - "
@@ -134,17 +134,17 @@ void showRelasi(ListRelasi LR) {
     }
 }
 
-void showMatkulFromJurusan(ListParent LP, ListRelasi LR, string jurusan) {
+void showMatkulFromJurusan(ListParent LP, ListRelasi LR, string jurusan) { //Supaya bisa menampilkan matkul dari jurusan yang ingin dicari, jurusan dan mata kuliah harus sudah terhubung melalui relasi terlebih dahulu.
     // 1. Validasi awal: Cari apakah jurusan ada di ListParent
     Parent *P = findJurusan(LP, jurusan);
 
     if (P == NULL) {
-        // Jika findJurusan mengembalikan NULL, artinya memang tidak pernah di-insert
+        ///Jika jurusan tidak ada, artinya jurusan tersebut tidak terdaftar
         cout << "Jurusan '" << jurusan << "' tidak terdaftar/tidak ada." << endl;
         return; // Keluar dari fungsi
     }
 
-    // 2. Jika jurusan ADA, baru telusuri relasinya
+    // 2. Jika jurusan ADA, maka mata kuliah tersebut bisa ditemukan
     Relasi *R = LR.first;
     bool adaRelasi = false;
 
@@ -163,8 +163,8 @@ void showMatkulFromJurusan(ListParent LP, ListRelasi LR, string jurusan) {
     }
 }
 
-void showJurusanFromMatkul(ListChild LC, ListRelasi LR, string matkul) {
-    // 1. Validasi awal: Cari apakah matkul ada di ListChild (Induk Matkul)
+void showJurusanFromMatkul(ListChild LC, ListRelasi LR, string matkul) { //Supaya bisa menampilkan jurusan dari mata kuliah yang ingin dicari, mata jurusan dan mata kuliah harus sudah terhubung melalui relasi terlebih dahulu.
+    //Apakah matkul tersebut sudah terdaftar
     Child *C = findMatkul(LC, matkul);
 
     if (C == NULL) {
@@ -173,7 +173,7 @@ void showJurusanFromMatkul(ListChild LC, ListRelasi LR, string matkul) {
         return; // Keluar dari fungsi agar tidak lanjut ke pengecekan relasi
     }
 
-    // 2. Jika matkul ADA, baru telusuri relasinya di ListRelasi
+    // 2. Jika matkul ADA, maka relasi tersebut dapat dicari
     Relasi *R = LR.first;
     bool adaRelasi = false;
 
@@ -186,7 +186,7 @@ void showJurusanFromMatkul(ListChild LC, ListRelasi LR, string matkul) {
         R = R->next;
     }
 
-    // 3. Jika matkul terdaftar tapi belum ada jurusan yang mengambilnya
+    // 3. Matkul tersebut sudah ada, namun belum dihubungkan dengan jurusan manapun
     if (!adaRelasi) {
         cout << "Mata kuliah terdaftar, namun belum diambil oleh jurusan manapun." << endl;
     }
@@ -198,7 +198,7 @@ void showAllJurusanMatkul(ListRelasi LR) {
     cout << "-------------------------------------" << endl;
 }
 
-void showAllMatkulJurusan(ListRelasi LR) {
+void showAllMatkulJurusan(ListRelasi LR) { //Menampilkan semua relasi mata kuliah dan jurusan
     // 1. Ambil pointer pertama dari ListRelasi
     Relasi *R = LR.first;
 
@@ -219,7 +219,7 @@ void showAllMatkulJurusan(ListRelasi LR) {
         cout << "---------------------------------------" << endl;
     }
 }
-int countChildFromParent(ListRelasi LR, string jurusan) {
+int countChildFromParent(ListRelasi LR, string jurusan) { //Menghitung jumlah matkul dari jurusan
     int count = 0;
     Relasi *R = LR.first;
     while (R) {
@@ -229,7 +229,7 @@ int countChildFromParent(ListRelasi LR, string jurusan) {
     return count;
 }
 
-int countParentFromChild(ListRelasi LR, string matkul) {
+int countParentFromChild(ListRelasi LR, string matkul) { //Menghitung jumlah jurusan dari matkul
     int count = 0;
     Relasi *R = LR.first;
     while (R) {
@@ -239,7 +239,7 @@ int countParentFromChild(ListRelasi LR, string matkul) {
     return count;
 }
 
-int countMatkulNoParent(ListChild LC, ListRelasi LR) {
+int countMatkulNoParent(ListChild LC, ListRelasi LR) { //
     int count = 0;
     Child *C = LC.first;
     while (C) {
@@ -293,5 +293,6 @@ void editRelasi(ListRelasi &LR, string oldJurusan, string oldMatkul, Parent *new
     }
     cout << "Relasi tidak ditemukan" << endl;
 }
+
 
 

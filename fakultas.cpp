@@ -89,7 +89,7 @@ void deleteJurusan(ListParent &LP, ListRelasi &LR, string jurusan) { //Menghapus
     cout << "Jurusan tidak ada" << endl;
 }
 
-void deleteMatkul(ListChild &LC, ListRelasi &LR, string matkul) {
+void deleteMatkul(ListChild &LC, ListRelasi &LR, string matkul) { //Menghapus mata kuliah. Sebelum ingin mata kuliah jurusan, jurusan tersebut sudah harus ada terlebih dahulu (yaitu sudah ditamabahkan melalui insert jurusan). Jika tidak ada, maka penghapusan mata kuliah tidak dapat dilakukan.
     Child *C = LC.first, *prev = NULL;
     while (C) {
         if (C->namaMatkul == matkul) {
@@ -239,7 +239,7 @@ int countParentFromChild(ListRelasi LR, string matkul) { //Menghitung jumlah jur
     return count;
 }
 
-int countMatkulNoParent(ListChild LC, ListRelasi LR) { //
+int countMatkulNoParent(ListChild LC, ListRelasi LR) { //Menghitung matakuliah tanpa jurusan
     int count = 0;
     Child *C = LC.first;
     while (C) {
@@ -258,7 +258,7 @@ int countMatkulNoParent(ListChild LC, ListRelasi LR) { //
     return count;
 }
 
-int countJurusanNoChild(ListParent LP, ListRelasi LR) {
+int countJurusanNoChild(ListParent LP, ListRelasi LR) { //Menghitung jurusan tanpa mata kuliah
     int count = 0;
     Parent *P = LP.first;
     while (P) {
@@ -277,7 +277,7 @@ int countJurusanNoChild(ListParent LP, ListRelasi LR) {
     return count;
 }
 
-void editRelasi(ListRelasi &LR, string oldJurusan, string oldMatkul, Parent *newP, Child *newC) {
+void editRelasi(ListRelasi &LR, string oldJurusan, string oldMatkul, Parent *newP, Child *newC) { //Jika ingin mengedit relasi, jurusan dan matakuliah tersebut sudah harus terhubung memiliki relasi terlebih dahulu.
     Relasi *R = LR.first;
     while (R) {
         if (R->parent->namaJurusan == oldJurusan &&
@@ -293,6 +293,7 @@ void editRelasi(ListRelasi &LR, string oldJurusan, string oldMatkul, Parent *new
     }
     cout << "Relasi tidak ditemukan" << endl;
 }
+
 
 
 

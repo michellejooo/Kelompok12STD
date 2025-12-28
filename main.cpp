@@ -14,25 +14,25 @@ int main() {
 
     while (true) {
         cout << "\nSelamat Datang di List Fakultas Informatika" << endl;
-        cout << "1  Insert Jurusan\n";
-        cout << "2  Insert Matkul\n";
-        cout << "3  Insert Relasi\n";
-        cout << "4  Delete Jurusan\n";
-        cout << "5  Delete Matkul\n";
-        cout << "6  Delete Relasi\n";
-        cout << "7  Find Jurusan\n";
-        cout << "8  Find Matkul\n";
-        cout << "9  Find Relasi\n";
-        cout << "10 Show All Jurusan\n";
-        cout << "11 Show All Matkul\n";
-        cout << "12 Show Matkul dari Jurusan\n";
-        cout << "13 Show Jurusan dari Matkul\n";
-        cout << "14 Show Semua Relasi Jurusan + Matkul\n";
-        cout << "15 Show Semua Relasi Matkul + Jurusan\n";
-        cout << "16 Count Matkul dari Jurusan\n";
-        cout << "17 Count Jurusan dari Matkul\n";
-        cout << "18 Count Matkul tanpa Jurusan\n";
-        cout << "19 Count Jurusan tanpa Matkul\n";
+        cout << "1  Masukkan Jurusan\n";
+        cout << "2  Masukkan Matkul\n";
+        cout << "3  Masukkan Relasi\n";
+        cout << "4  Hapus Jurusan\n";
+        cout << "5  Hapus Matkul\n";
+        cout << "6  Hapus Relasi\n";
+        cout << "7  Temukan Jurusan\n";
+        cout << "8  Temukan Matkul\n";
+        cout << "9  Temukan Relasi\n";
+        cout << "10 Tampilkan Semua Jurusan\n";
+        cout << "11 Tampilkan Semua Matkul\n";
+        cout << "12 Tampilkan Matkul dari Jurusan\n";
+        cout << "13 Tampilkan Jurusan dari Matkul\n";
+        cout << "14 Tampilkan Semua Relasi Jurusan + Matkul\n";
+        cout << "15 Tampilkan Semua Relasi Matkul + Jurusan\n";
+        cout << "16 Hitung Matkul dari Jurusan\n";
+        cout << "17 Hitung Jurusan dari Matkul\n";
+        cout << "18 Hitung Matkul tanpa Jurusan\n";
+        cout << "19 Hitung Jurusan tanpa Matkul\n";
         cout << "20 Edit Relasi\n";
         cout << "Pilih angka : ";
 
@@ -136,3 +136,4 @@ int main() {
 
     return 0;
 }
+

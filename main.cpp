@@ -37,9 +37,9 @@ int main() {
         cout << "Pilih angka : ";
 
         if (!(cin >> pil)) {
-             break; // Ini satu-satunya break untuk menghentikan loop while
+             break; // Break hanya digunakan untuk menghentikan perulangan ketika input menu tidak valid.
         }
-        cin.ignore(); // Membersihkan sisa 'Enter' agar getline tidak terlewati
+        cin.ignore(); // cin.ignore() dipakai untuk membuang tombol ENTER yang masih tersisa setelah kita input angka dengan cin >>, supaya saat getline() dipakai, input teks tidak terlewati atau kosong.
 
         // MENGGANTI SWITCH-CASE DENGAN IF-ELSE IF (TANPA BREAK)
         if (pil == 1) {
@@ -95,7 +95,7 @@ int main() {
             showMatkul(LC);
         }
        else if (pil == 12) {
-    cout << "Jurusan: "; getline(cin, jur);
+    cout << "Jurusan: "; getline(cin, jur); //getline digunakan untuk membaca input string satu baris penuh, termasuk spasi, sampai pengguna menekan ENTER dan getline dipakai supaya bisa input kalimat, bukan cuma satu kata.
     showMatkulFromJurusan(LP, LR, jur); // Pastikan LP dimasukkan di sini
 }
         else if (pil == 13) {
@@ -136,4 +136,5 @@ int main() {
 
     return 0;
 }
+
 

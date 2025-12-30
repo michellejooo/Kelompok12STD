@@ -4,13 +4,13 @@
 using namespace std;
 
 int main() {
-    ListParent LP;
-    ListChild LC;
-    ListRelasi LR;
+    ListParent LP; //Wadah jurusan
+    ListChild LC; //Wadah matakuliah
+    ListRelasi LR; //Wadah hubunga  jurusan dan matakuliah
     createList(LP, LC, LR);
 
-    int pil;
-    bool jalan = true;
+    int pil; //Menyimpan angka pilihan
+    bool jalan = true;//Mengatur apakah program terus berjalan atau berhenti
     string jur, mat, jur2, mat2;
 
     while (jalan) {

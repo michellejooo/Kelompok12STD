@@ -10,9 +10,10 @@ int main() {
     createList(LP, LC, LR);
 
     int pil;
+    bool jalan = true;
     string jur, mat, jur2, mat2;
 
-    while (true) {
+    while (jalan) {
         cout << "\nSelamat Datang di List Fakultas Informatika" << endl;
         cout << "1  Masukkan Jurusan\n";
         cout << "2  Masukkan Matkul\n";
@@ -36,14 +37,16 @@ int main() {
         cout << "20 Edit Relasi\n";
         cout << "Pilih angka : ";
 
-        if (!(cin >> pil)) {
-             break; // Break hanya digunakan untuk menghentikan perulangan ketika input menu tidak valid.
-        }
-        cin.ignore(); // cin.ignore() dipakai untuk membuang tombol ENTER yang masih tersisa setelah kita input angka dengan cin >>, supaya saat getline() dipakai, input teks tidak terlewati atau kosong.
+    if (!(cin >> pil)) {
+        jalan = false;
+}
+    else {
+    cin.ignore(); //cin.ignore digunakan untuk membuang ENTER sisa input sebelumnya supaya getline tidak langsung kosong.
+    }
 
         // MENGGANTI SWITCH-CASE DENGAN IF-ELSE IF (TANPA BREAK)
         if (pil == 1) {
-            cout << "Nama Jurusan: "; getline(cin, jur);
+            cout << "Nama Jurusan: "; getline(cin, jur); //Menggunakan getline, karena terdapat jurusan yang memiliki 2 kata, sedangkan jika tanpa menggunakan getline, 2 kata yang dimasukkan ke inputan hanya menerima 1 kata dari 2 kata tersebut. Sehingga getline fungsinya adalah untuk membaca kalimat lengkap, termasuk spasi
             insertJurusan(LP, jur);
         }
         else if (pil == 2) {
@@ -95,7 +98,7 @@ int main() {
             showMatkul(LC);
         }
        else if (pil == 12) {
-    cout << "Jurusan: "; getline(cin, jur); //getline digunakan untuk membaca input string satu baris penuh, termasuk spasi, sampai pengguna menekan ENTER dan getline dipakai supaya bisa input kalimat, bukan cuma satu kata.
+    cout << "Jurusan: "; getline(cin, jur);
     showMatkulFromJurusan(LP, LR, jur); // Pastikan LP dimasukkan di sini
 }
         else if (pil == 13) {
@@ -136,5 +139,4 @@ int main() {
 
     return 0;
 }
-
 

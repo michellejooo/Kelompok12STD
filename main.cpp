@@ -1,142 +1,270 @@
 #include <iostream>
+#include <limits>
 #include <string>
 #include "fakultas.h"
+
 using namespace std;
 
 int main() {
-    ListParent LP; //Wadah jurusan
-    ListChild LC; //Wadah matakuliah
-    ListRelasi LR; //Wadah hubunga  jurusan dan matakuliah
-    createList(LP, LC, LR);
+    ListParent L;
+    createList(L);
 
-    int pil; //Menyimpan angka pilihan
-    bool jalan = true;//Mengatur apakah program terus berjalan atau berhenti
+    int pil = 0;
+    bool jalan = true;
+
     string jur, mat, jur2, mat2;
 
     while (jalan) {
-        cout << "\nSelamat Datang di List Fakultas Informatika" << endl;
-        cout << "1  Masukkan Jurusan\n";
-        cout << "2  Masukkan Matkul\n";
-        cout << "3  Masukkan Relasi\n";
-        cout << "4  Hapus Jurusan\n";
-        cout << "5  Hapus Matkul\n";
-        cout << "6  Hapus Relasi\n";
-        cout << "7  Temukan Jurusan\n";
-        cout << "8  Temukan Matkul\n";
-        cout << "9  Temukan Relasi\n";
-        cout << "10 Tampilkan Semua Jurusan\n";
-        cout << "11 Tampilkan Semua Matkul\n";
-        cout << "12 Tampilkan Matkul dari Jurusan\n";
-        cout << "13 Tampilkan Jurusan dari Matkul\n";
-        cout << "14 Tampilkan Semua Relasi Jurusan + Matkul\n";
-        cout << "15 Tampilkan Semua Relasi Matkul + Jurusan\n";
-        cout << "16 Hitung Matkul dari Jurusan\n";
-        cout << "17 Hitung Jurusan dari Matkul\n";
-        cout << "18 Hitung Matkul tanpa Jurusan\n";
-        cout << "19 Hitung Jurusan tanpa Matkul\n";
-        cout << "20 Edit Relasi\n";
-        cout << "Pilih angka : ";
+        cout << "\n============================================\n";
+        cout << " SISTEM MANAJEMEN JURUSAN DAN MATA KULIAH\n";
+        cout << "============================================\n";
 
-    if (!(cin >> pil)) {
-        jalan = false;
-}
-    else {
-    cin.ignore(); //cin.ignore digunakan untuk membuang ENTER sisa input sebelumnya supaya getline tidak langsung kosong.
-    }
+        cout << "1.  Tambahkan Jurusan\n";
+        cout << "2.  Tambahkan Mata Kuliah ke Jurusan\n";
+        cout << "3.  Tambahkan Mata Kuliah ke Jurusan Lain\n";
+        cout << "4.  Hapus Jurusan\n";
+        cout << "5.  Hapus Mata Kuliah dari Jurusan\n";
+        cout << "6.  Hapus Relasi Jurusan dan Mata Kuliah\n";
+        cout << "7.  Cari Jurusan\n";
+        cout << "8.  Cari Mata Kuliah pada Jurusan\n";
+        cout << "9.  Cari Relasi Jurusan dan Mata Kuliah\n";
+        cout << "10. Tampilkan Semua Jurusan\n";
+        cout << "11. Tampilkan Mata Kuliah dari Jurusan\n";
+        cout << "12. Tampilkan Mata Kuliah dari Jurusan Tertentu\n";
+        cout << "13. Tampilkan Jurusan yang Memiliki Mata Kuliah\n";
+        cout << "14. Tampilkan Semua Relasi Jurusan - Mata Kuliah\n";
+        cout << "15. Tampilkan Semua Relasi Mata Kuliah - Jurusan\n";
+        cout << "16. Hitung Mata Kuliah dari Jurusan\n";
+        cout << "17. Hitung Jurusan yang Memiliki Mata Kuliah\n";
+        cout << "18. Hitung Mata Kuliah Tanpa Jurusan\n";
+        cout << "19. Hitung Jurusan Tanpa Mata Kuliah\n";
+        cout << "20. Edit Relasi Jurusan dan Mata Kuliah\n";
+        cout << "0.  Keluar\n";
 
-        // MENGGANTI SWITCH-CASE DENGAN IF-ELSE IF (TANPA BREAK)
+        cout << "Pilih menu: ";
+
+        if (!(cin >> pil)) {
+            cout << "Input harus berupa angka.\n";
+
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+            continue;
+        }
+
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+        // 1. Insert Jurusan
         if (pil == 1) {
-            cout << "Nama Jurusan: "; getline(cin, jur); //Menggunakan getline, karena terdapat jurusan yang memiliki 2 kata, sedangkan jika tanpa menggunakan getline, 2 kata yang dimasukkan ke inputan hanya menerima 1 kata dari 2 kata tersebut. Sehingga getline fungsinya adalah untuk membaca kalimat lengkap, termasuk spasi
-            insertJurusan(LP, jur);
+            cout << "Nama jurusan: ";
+            getline(cin, jur);
+
+            insertJurusan(L, jur);
         }
+
+        // 2. Insert Mata Kuliah
         else if (pil == 2) {
-            cout << "Nama Matkul: "; getline(cin, mat);
-            insertMatkul(LC, mat);
+            cout << "Nama jurusan: ";
+            getline(cin, jur);
+
+            cout << "Nama mata kuliah: ";
+            getline(cin, mat);
+
+            insertMatkul(L, jur, mat);
         }
+
+        // 3. Insert Mata Kuliah ke Jurusan Lain
         else if (pil == 3) {
-            cout << "Jurusan: "; getline(cin, jur);
-            cout << "Matkul: "; getline(cin, mat);
-            Parent *P = findJurusan(LP, jur);
-            Child *C = findMatkul(LC, mat);
-            if (!P) cout << "Jurusan tidak ada" << endl;
-            else if (!C) cout << "Matkul tidak ada" << endl;
-            else insertRelasi(LR, P, C);
+            cout << "Nama jurusan tujuan: ";
+            getline(cin, jur);
+
+            cout << "Nama mata kuliah: ";
+            getline(cin, mat);
+
+            insertMatkul(L, jur, mat);
         }
+
+        // 4. Delete Jurusan
         else if (pil == 4) {
-            cout << "Nama Jurusan: "; getline(cin, jur);
-            deleteJurusan(LP, LR, jur);
+            cout << "Nama jurusan: ";
+            getline(cin, jur);
+
+            deleteJurusan(L, jur);
         }
+
+        // 5. Delete Mata Kuliah
         else if (pil == 5) {
-            cout << "Nama Matkul: "; getline(cin, mat);
-            deleteMatkul(LC, LR, mat);
+            cout << "Nama jurusan: ";
+            getline(cin, jur);
+
+            cout << "Nama mata kuliah: ";
+            getline(cin, mat);
+
+            deleteMatkul(L, jur, mat);
         }
+
+        // 6. Delete Relasi
         else if (pil == 6) {
-            cout << "Jurusan: "; getline(cin, jur);
-            cout << "Matkul: "; getline(cin, mat);
-            deleteRelasi(LR, jur, mat);
+            cout << "Nama jurusan: ";
+            getline(cin, jur);
+
+            cout << "Nama mata kuliah: ";
+            getline(cin, mat);
+
+            deleteMatkul(L, jur, mat);
         }
+
+        // 7. Search Jurusan
         else if (pil == 7) {
-            cout << "Nama Jurusan: "; getline(cin, jur);
-            if (findJurusan(LP, jur)) cout << "Jurusan ditemukan" << endl;
-            else cout << "Jurusan tidak ada" << endl;
+            cout << "Nama jurusan: ";
+            getline(cin, jur);
+
+            if (findJurusan(L, jur) != nullptr) {
+                cout << "Jurusan ditemukan.\n";
+            } else {
+                cout << "Jurusan tidak ditemukan.\n";
+            }
         }
+
+        // 8. Search Mata Kuliah
         else if (pil == 8) {
-            cout << "Nama Matkul: "; getline(cin, mat);
-            if (findMatkul(LC, mat)) cout << "Matkul ditemukan" << endl;
-            else cout << "Matkul tidak ada" << endl;
+            cout << "Nama jurusan: ";
+            getline(cin, jur);
+
+            cout << "Nama mata kuliah: ";
+            getline(cin, mat);
+
+            adrParent P = findJurusan(L, jur);
+
+            if (findMatkul(P, mat) != nullptr) {
+                cout << "Mata kuliah ditemukan.\n";
+            } else {
+                cout << "Mata kuliah tidak ditemukan.\n";
+            }
         }
+
+        // 9. Search Relasi
         else if (pil == 9) {
-            cout << "Jurusan: "; getline(cin, jur);
-            cout << "Matkul: "; getline(cin, mat);
-            if (findRelasi(LR, jur, mat)) cout << "Ada relasi" << endl;
-            else cout << "Tidak ada relasi" << endl;
+            cout << "Nama jurusan: ";
+            getline(cin, jur);
+
+            cout << "Nama mata kuliah: ";
+            getline(cin, mat);
+
+            if (findRelasi(L, jur, mat)) {
+                cout << "Relasi ditemukan.\n";
+            } else {
+                cout << "Relasi tidak ditemukan.\n";
+            }
         }
+
+        // 10. Show Semua Jurusan
         else if (pil == 10) {
-            showJurusan(LP);
+            showJurusan(L);
         }
+
+        // 11. Show Mata Kuliah
         else if (pil == 11) {
-            showMatkul(LC);
+            cout << "Nama jurusan: ";
+            getline(cin, jur);
+
+            showMatkul(L, jur);
         }
-       else if (pil == 12) {
-    cout << "Jurusan: "; getline(cin, jur);
-    showMatkulFromJurusan(LP, LR, jur); // Pastikan LP dimasukkan di sini
-}
+
+        // 12. Show Mata Kuliah dari Jurusan Tertentu
+        else if (pil == 12) {
+            cout << "Nama jurusan: ";
+            getline(cin, jur);
+
+            showMatkulFromJurusan(L, jur);
+        }
+
+        // 13. Show Jurusan dari Mata Kuliah
         else if (pil == 13) {
-    cout << "Matkul: "; getline(cin, mat);
-    showJurusanFromMatkul(LC, LR, mat); // Tambahkan LC di sini
-}
+            cout << "Nama mata kuliah: ";
+            getline(cin, mat);
+
+            showJurusanFromMatkul(L, mat);
+        }
+
+        // 14. Show Semua Relasi Jurusan - Mata Kuliah
         else if (pil == 14) {
-            showAllJurusanMatkul(LR);
+            showAllJurusanMatkul(L);
         }
+
+        // 15. Show Semua Relasi Mata Kuliah - Jurusan
         else if (pil == 15) {
-            showAllMatkulJurusan(LR);
+            showAllMatkulJurusan(L);
         }
+
+        // 16. Count Mata Kuliah dari Jurusan
         else if (pil == 16) {
-            cout << "Jurusan: "; getline(cin, jur);
-            cout << "Total Matkul di " << jur << ": " << countChildFromParent(LR, jur) << endl;
+            cout << "Nama jurusan: ";
+            getline(cin, jur);
+
+            int total = countChildFromParent(L, jur);
+
+            if (total == -1) {
+                cout << "Jurusan tidak ditemukan.\n";
+            } else {
+                cout << "Jumlah mata kuliah pada "
+                     << jur << ": " << total << endl;
+            }
         }
+
+        // 17. Count Jurusan yang Memiliki Mata Kuliah
         else if (pil == 17) {
-            cout << "Matkul: "; getline(cin, mat);
-            cout << "Total Jurusan ambil " << mat << ": " << countParentFromChild(LR, mat) << endl;
+            cout << "Nama mata kuliah: ";
+            getline(cin, mat);
+
+            cout << "Jumlah jurusan yang memiliki "
+                 << mat << ": "
+                 << countParentFromChild(L, mat) << endl;
         }
+
+        // 18. Count Mata Kuliah Tanpa Jurusan
         else if (pil == 18) {
-            cout << "Total Matkul tanpa Jurusan terdaftar: " << countMatkulNoParent(LC, LR) << endl;
+            cout << "Jumlah mata kuliah tanpa jurusan: "
+                 << countMatkulNoParent(L) << endl;
+
+            cout << "(Pada model List to List, Child harus "
+                 << "berada di bawah Parent.)\n";
         }
+
+        // 19. Count Jurusan Tanpa Mata Kuliah
         else if (pil == 19) {
-            cout << "Total Jurusan tanpa Matkul terdaftar: " << countJurusanNoChild(LP, LR) << endl;
+            cout << "Jumlah jurusan tanpa mata kuliah: "
+                 << countJurusanNoChild(L) << endl;
         }
+
+        // 20. Edit Relasi
         else if (pil == 20) {
-            cout << "Jurusan lama: "; getline(cin, jur);
-            cout << "Matkul lama: "; getline(cin, mat);
-            cout << "Jurusan baru: "; getline(cin, jur2);
-            cout << "Matkul baru: "; getline(cin, mat2);
-            Parent *P = findJurusan(LP, jur2);
-            Child *C = findMatkul(LC, mat2);
-            if (!P || !C) cout << "Jurusan/Matkul baru tidak ada" << endl;
-            else editRelasi(LR, jur, mat, P, C);
+            cout << "Jurusan lama: ";
+            getline(cin, jur);
+
+            cout << "Mata kuliah lama: ";
+            getline(cin, mat);
+
+            cout << "Jurusan baru: ";
+            getline(cin, jur2);
+
+            cout << "Nama mata kuliah baru: ";
+            getline(cin, mat2);
+
+            editRelasi(L, jur, mat, jur2, mat2);
+        }
+
+        // Exit
+        else if (pil == 0) {
+            jalan = false;
+        }
+
+        else {
+            cout << "Pilihan tidak tersedia.\n";
         }
     }
+
+    cout << "Program selesai.\n";
 
     return 0;
 }
-

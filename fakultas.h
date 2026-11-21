@@ -4,64 +4,65 @@
 #include <string>
 using namespace std;
 
-struct Parent; //Struct jurusan
-struct Child; //struct matkul
-struct Relasi; //struct relasi jurusan dan matkul
+// MLL List to List
+struct Parent;
+struct Child;
 
-struct Parent {
-    string namaJurusan; //isinya adalah nama-nama jurusan
-    Parent *next;
-};
+typedef Parent* adrParent;
+typedef Child* adrChild;
 
 struct Child {
-    string namaMatkul; //isinya adalah nama-nama matkul yang akan di insert di program
-    Child *next;
+    string namaMatkul;
+    adrChild next;
 };
 
-struct Relasi { //Terjadi relasi antara jurusan (parent) dan matkul (child)
-    Parent *parent;
-    Child *child;
-    Relasi *next;
+struct Parent {
+    string namaJurusan;
+    adrParent next;
+    adrChild firstChild;
 };
 
-struct ListParent { Parent *first; }; //wadah untuk daftar jurusan
-struct ListChild  { Child  *first; }; //wadah untuk daftar matkul
-struct ListRelasi { Relasi *first; }; //wadah untuk daftar relasi
+struct ListParent {
+    adrParent first;
+};
 
-//list untuk menciptakan jurusan, matkul, relasi
-void createList(ListParent &LP, ListChild &LC, ListRelasi &LR);
+// Inisialisasi
+void createList(ListParent &L);
 
+// Operasi Parent
+void insertJurusan(ListParent &L, const string &jurusan);
+void deleteJurusan(ListParent &L, const string &jurusan);
+adrParent findJurusan(ListParent L, const string &jurusan);
+void showJurusan(ListParent L);
 
-void insertJurusan(ListParent &LP, string jurusan); //menambahkan jurusan
-void insertMatkul(ListChild &LC, string matkul); //menambahkan jurusan
-void insertRelasi(ListRelasi &LR, Parent *P, Child *C); //menghubungkan relasi setelah jurusan dan matkul ditambahkan
+// Operasi Child
+void insertMatkul(ListParent &L, const string &jurusan,
+                  const string &matkul);
+void deleteMatkul(ListParent &L, const string &jurusan,
+                  const string &matkul);
+adrChild findMatkul(adrParent P, const string &matkul);
+void showMatkul(ListParent L, const string &jurusan);
 
+// Operasi Relasi
+bool findRelasi(ListParent L, const string &jurusan,
+                const string &matkul);
+void showMatkulFromJurusan(ListParent L, const string &jurusan);
+void showJurusanFromMatkul(ListParent L, const string &matkul);
+void showAllJurusanMatkul(ListParent L);
+void showAllMatkulJurusan(ListParent L);
+void showAll(ListParent L);
 
-void deleteJurusan(ListParent &LP, ListRelasi &LR, string jurusan); //Menghapus jurusan
-void deleteMatkul(ListChild &LC, ListRelasi &LR, string matkul); // Menghapus matkul
-void deleteRelasi(ListRelasi &LR, string jurusan, string matkul); // Menghapus relasi hubungan jurusan dan matkul
+// Perhitungan
+int countChildFromParent(ListParent L, const string &jurusan);
+int countParentFromChild(ListParent L, const string &matkul);
+int countMatkulNoParent(ListParent L);
+int countJurusanNoChild(ListParent L);
 
-
-Parent* findJurusan(ListParent LP, string jurusan); //Mencari jurusan
-Child* findMatkul(ListChild LC, string matkul); //Mencari matkul
-bool findRelasi(ListRelasi LR, string jurusan, string matkul); //Mencari apakah hubungan antara jurusan dan matkul ada atau tidak
-
-// show
-void showJurusan(ListParent LP); //Menampilkan jurusan
-void showMatkul(ListChild LC); //Menampilkan matkul
-void showRelasi(ListRelasi LR); //Menampilkan hubungan jurusan dan matkul
-void showMatkulFromJurusan(ListParent LP, ListRelasi LR, string jurusan); //Meenampilkan matkul dari mengetik jurusan
-void showJurusanFromMatkul(ListChild LC, ListRelasi LR, string matkul); //Menampilkan jurusan dari mengetik matkul
-void showAllJurusanMatkul(ListRelasi LR); 
-void showAllMatkulJurusan(ListRelasi LR);
-
-// count
-int countChildFromParent(ListRelasi LR, string jurusan); //menghitung jumlah matkul yang dimiliki jurusan
-int countParentFromChild(ListRelasi LR, string matkul); //menghitung jumlah jurusan yang dimiliki matkul
-int countMatkulNoParent(ListChild LC, ListRelasi LR); //menghitung matkul tanpa jurusan
-int countJurusanNoChild(ListParent LP, ListRelasi LR); //menghitung jurusan tanpa matkul
-
-// edit
-void editRelasi(ListRelasi &LR, string oldJurusan, string oldMatkul, Parent *newP, Child *newC); //Mengedit relasi
+// Edit Relasi
+void editRelasi(ListParent &L,
+                const string &oldJurusan,
+                const string &oldMatkul,
+                const string &newJurusan,
+                const string &newMatkul);
 
 #endif

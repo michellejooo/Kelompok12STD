@@ -1,299 +1,439 @@
 #include "fakultas.h"
 #include <iostream>
-#include <string>
 using namespace std;
 
-void createList(ListParent &LP, ListChild &LC, ListRelasi &LR) {
-    LP.first = NULL; //Terdapat sebelum memulai program belum ada data sama sekali
-    LC.first = NULL; //Terdapat sebelum memulai program belum ada data sama sekali
-    LR.first = NULL; //Terdapat sebelum memulai program belum ada data sama sekali
+// Inisialisasi List
+void createList(ListParent &L) {
+    L.first = nullptr;
 }
 
-void insertJurusan(ListParent &LP, string jurusan) {
-    Parent *P = new Parent{jurusan, LP.first}; //Menambahkan jurusan baru
-    LP.first = P; //Node baru jurusan jadi paling depan
-    cout << "Jurusan '" << jurusan << "' sudah dibuat" << endl;
-}
+// Mencari Jurusan
+adrParent findJurusan(ListParent L, const string &jurusan) {
+    adrParent P = L.first;
 
-void insertMatkul(ListChild &LC, string matkul) { //ini pake abcdjnnnifninf
-    Child *C = new Child{matkul, LC.first}; //Menambahkan matkul baru
-    LC.first = C; //Node baru matkul jadi paling depan
-    cout << "Mata Kuliah '" << matkul << "' sudah dibuat" << endl;
-}
-
-Parent* findJurusan(ListParent LP, string jurusan) { //Mencari jurusan
-    Parent *P = LP.first; //Jika ada jurusan yang sudah tersimpan dari menambahkan jurusan tadi, maka jurusan tersebut ditemukan
-    while (P) {
-        if (P->namaJurusan == jurusan) return P;
+    while (P != nullptr) {
+        if (P->namaJurusan == jurusan) {
+            return P;
+        }
         P = P->next;
     }
-    return NULL;
+
+    return nullptr;
 }
 
-Child* findMatkul(ListChild LC, string matkul) {
-    Child *C = LC.first; //Jika ada matkul yang sudah tersimpan dari menambahkan matkul tadi, maka matkul tersebut ditemukan
-    while (C) {
-        if (C->namaMatkul == matkul) return C;
+// Mencari Mata Kuliah pada Jurusan
+adrChild findMatkul(adrParent P, const string &matkul) {
+    if (P == nullptr) {
+        return nullptr;
+    }
+
+    adrChild C = P->firstChild;
+
+    while (C != nullptr) {
+        if (C->namaMatkul == matkul) {
+            return C;
+        }
         C = C->next;
     }
-    return NULL;
+
+    return nullptr;
 }
 
-void insertRelasi(ListRelasi &LR, Parent *P, Child *C) { //Menambahkan relasi. Menghubungkan jurusan dan matkul, sebelum menghubungkan, jurusan dan matkul tersebut sudah ditambahkan terlebih dahulu
-    Relasi *R = new Relasi{P, C, LR.first};
-    LR.first = R;
-    cout << "Relasi " << P->namaJurusan << " - " << C->namaMatkul << " sudah dibuat" << endl;
-}
-
-bool findRelasi(ListRelasi LR, string jurusan, string matkul) { //Mencari relasi. Jika ingin menemukan relasi, maka relasi tersebut sudah dihubungkan antara jurusan dan mata kuliah
-    Relasi *R = LR.first;
-    while (R) {
-        if (R->parent->namaJurusan == jurusan &&
-            R->child->namaMatkul == matkul)
-            return true;
-        R = R->next;
+// Menambahkan Jurusan
+void insertJurusan(ListParent &L, const string &jurusan) {
+    if (jurusan.empty()) {
+        cout << "Nama jurusan tidak boleh kosong.\n";
+        return;
     }
-    return false;
-}
 
-void deleteRelasi(ListRelasi &LR, string jurusan, string matkul) {
-    Relasi *R = LR.first, *prev = NULL;
-    while (R) {
-        if (R->parent->namaJurusan == jurusan &&
-            R->child->namaMatkul == matkul) {
-            if (prev == NULL) LR.first = R->next;
-            else prev->next = R->next;
-            delete R;
-            cout << "Relasi dihapus" << endl;
-            return;
-        }
-        prev = R;
-        R = R->next;
+    if (findJurusan(L, jurusan) != nullptr) {
+        cout << "Jurusan sudah terdaftar.\n";
+        return;
     }
-    cout << "Tidak ada relasi antara jurusan dan matkul ini" << endl;
+
+    adrParent P = new Parent;
+
+    P->namaJurusan = jurusan;
+    P->firstChild = nullptr;
+    P->next = L.first;
+
+    L.first = P;
+
+    cout << "Jurusan berhasil ditambahkan.\n";
 }
 
-void deleteJurusan(ListParent &LP, ListRelasi &LR, string jurusan) { //Menghapus jurusan. Sebelum ingin menghapus jurusan, jurusan tersebut sudah harus ada terlebih dahulu (yaitu sudah ditamabahkan melalui insert jurusan). Jika tidak ada, maka penghapusan jurusan tidak dapat dilakukan.
-    Parent *P = LP.first, *prev = NULL;
-    while (P) {
-        if (P->namaJurusan == jurusan) {
-            if (prev == NULL) LP.first = P->next;
-            else prev->next = P->next;
-            delete P;
-            cout << "Jurusan dihapus" << endl;
-            return;
-        }
-        prev = P;
-        P = P->next;
+// Menambahkan Mata Kuliah ke Jurusan
+void insertMatkul(ListParent &L, const string &jurusan,
+                  const string &matkul) {
+    adrParent P = findJurusan(L, jurusan);
+
+    if (P == nullptr) {
+        cout << "Jurusan tidak ditemukan.\n";
+        return;
     }
-    cout << "Jurusan tidak ada" << endl;
+
+    if (matkul.empty()) {
+        cout << "Nama mata kuliah tidak boleh kosong.\n";
+        return;
+    }
+
+    if (findMatkul(P, matkul) != nullptr) {
+        cout << "Mata kuliah sudah terdaftar pada jurusan ini.\n";
+        return;
+    }
+
+    adrChild C = new Child;
+
+    C->namaMatkul = matkul;
+    C->next = P->firstChild;
+
+    P->firstChild = C;
+
+    cout << "Mata kuliah berhasil ditambahkan ke jurusan "
+         << jurusan << ".\n";
 }
 
-void deleteMatkul(ListChild &LC, ListRelasi &LR, string matkul) { //Menghapus mata kuliah. Sebelum ingin mata kuliah jurusan, jurusan tersebut sudah harus ada terlebih dahulu (yaitu sudah ditamabahkan melalui insert jurusan). Jika tidak ada, maka penghapusan mata kuliah tidak dapat dilakukan.
-    Child *C = LC.first, *prev = NULL;
-    while (C) {
-        if (C->namaMatkul == matkul) {
-            if (prev == NULL) LC.first = C->next;
-            else prev->next = C->next;
-            delete C;
-            cout << "Matkul dihapus" << endl;
-            return;
-        }
+// Menghapus Mata Kuliah dari Jurusan
+void deleteMatkul(ListParent &L, const string &jurusan,
+                  const string &matkul) {
+    adrParent P = findJurusan(L, jurusan);
+
+    if (P == nullptr) {
+        cout << "Jurusan tidak ditemukan.\n";
+        return;
+    }
+
+    adrChild C = P->firstChild;
+    adrChild prev = nullptr;
+
+    while (C != nullptr && C->namaMatkul != matkul) {
         prev = C;
         C = C->next;
     }
-    cout << "Matkul tidak ada" << endl;
-}
 
-void showJurusan(ListParent LP) { //Menampilkan semua jurusan yang sudah ditambahkan sebelumnya
-    Parent *P = LP.first;
-    cout << "--- Daftar Jurusan ---" << endl;
-    while (P) {
-        cout << P->namaJurusan << endl;
-        P = P->next;
-    }
-    cout << "----------------------" << endl;
-}
-
-void showMatkul(ListChild LC) { //Menampilkan semua mata kuliah yang sudah ditambahkan sebelumnya
-    Child *C = LC.first;
-    cout << "--- Daftar Mata Kuliah ---" << endl;
-    while (C) {
-        cout << C->namaMatkul << endl;
-        C = C->next;
-    }
-    cout << "--------------------------" << endl;
-}
-
-void showRelasi(ListRelasi LR) { //Menampilkan semua relasi jurusan dan mata kuliah yang sudah dihubungkan sebelumnya
-    Relasi *R = LR.first;
-    while (R) {
-        cout << R->parent->namaJurusan << " - "
-             << R->child->namaMatkul << endl;
-        R = R->next;
-    }
-}
-
-void showMatkulFromJurusan(ListParent LP, ListRelasi LR, string jurusan) { //Supaya bisa menampilkan matkul dari jurusan yang ingin dicari, jurusan dan mata kuliah harus sudah terhubung melalui relasi terlebih dahulu.
-    // 1. Validasi awal: Cari apakah jurusan ada di ListParent
-    Parent *P = findJurusan(LP, jurusan);
-
-    if (P == NULL) {
-        ///Jika jurusan tidak ada, artinya jurusan tersebut tidak terdaftar
-        cout << "Jurusan '" << jurusan << "' tidak terdaftar/tidak ada." << endl;
-        return; // Keluar dari fungsi
+    if (C == nullptr) {
+        cout << "Mata kuliah tidak ditemukan.\n";
+        return;
     }
 
-    // 2. Jika jurusan ADA, maka mata kuliah tersebut bisa ditemukan
-    Relasi *R = LR.first;
-    bool adaRelasi = false;
-
-    cout << "Mata Kuliah di " << jurusan << ":" << endl;
-    while (R != NULL) {
-        if (R->parent->namaJurusan == jurusan) {
-            cout << "- " << R->child->namaMatkul << endl;
-            adaRelasi = true;
-        }
-        R = R->next;
-    }
-
-    // 3. Jika jurusan terdaftar tapi tidak ada matkul yang terhubung
-    if (!adaRelasi) {
-        cout << "Jurusan ini belum memiliki matkul terdaftar." << endl;
-    }
-}
-
-void showJurusanFromMatkul(ListChild LC, ListRelasi LR, string matkul) { //Supaya bisa menampilkan jurusan dari mata kuliah yang ingin dicari, mata jurusan dan mata kuliah harus sudah terhubung melalui relasi terlebih dahulu.
-    //Apakah matkul tersebut sudah terdaftar
-    Child *C = findMatkul(LC, matkul);
-
-    if (C == NULL) {
-        // Jika findMatkul mengembalikan NULL, artinya matkul belum di-insert
-        cout << "Error: Mata Kuliah '" << matkul << "' tidak ditemukan/belum terdaftar." << endl;
-        return; // Keluar dari fungsi agar tidak lanjut ke pengecekan relasi
-    }
-
-    // 2. Jika matkul ADA, maka relasi tersebut dapat dicari
-    Relasi *R = LR.first;
-    bool adaRelasi = false;
-
-    cout << "Jurusan yang mengambil " << matkul << ":" << endl;
-    while (R != NULL) {
-        if (R->child->namaMatkul == matkul) {
-            cout << "- " << R->parent->namaJurusan << endl;
-            adaRelasi = true;
-        }
-        R = R->next;
-    }
-
-    // 3. Matkul tersebut sudah ada, namun belum dihubungkan dengan jurusan manapun
-    if (!adaRelasi) {
-        cout << "Mata kuliah terdaftar, namun belum diambil oleh jurusan manapun." << endl;
-    }
-}
-
-void showAllJurusanMatkul(ListRelasi LR) {
-    cout << "--- Semua Relasi Jurusan - Matkul ---" << endl;
-    showRelasi(LR);
-    cout << "-------------------------------------" << endl;
-}
-
-void showAllMatkulJurusan(ListRelasi LR) { //Menampilkan semua relasi mata kuliah dan jurusan
-    // 1. Ambil pointer pertama dari ListRelasi
-    Relasi *R = LR.first;
-
-    if (R == NULL) {
-        // Jika tidak ada data di ListRelasi
-        cout << "Belum ada relasi yang terdaftar." << endl;
+    if (prev == nullptr) {
+        P->firstChild = C->next;
     } else {
-        cout << "--- Semua Relasi (Matkul - Jurusan) ---" << endl;
-        // 2. Lakukan perulangan melalui seluruh isi ListRelasi
-        while (R != NULL) {
-            // 3. Tampilkan nama Matkul (child) dulu, baru nama Jurusan (parent)
-            // Sesuai struktur: R->child menunjuk ke data Matkul, R->parent ke Jurusan
-            cout << R->child->namaMatkul << " - " << R->parent->namaJurusan << endl;
+        prev->next = C->next;
+    }
 
-            // 4. Pindah ke elemen relasi berikutnya
-            R = R->next;
-        }
-        cout << "---------------------------------------" << endl;
-    }
-}
-int countChildFromParent(ListRelasi LR, string jurusan) { //Menghitung jumlah matkul dari jurusan
-    int count = 0;
-    Relasi *R = LR.first;
-    while (R) {
-        if (R->parent->namaJurusan == jurusan) count++;
-        R = R->next;
-    }
-    return count;
+    delete C;
+
+    cout << "Mata kuliah berhasil dihapus.\n";
 }
 
-int countParentFromChild(ListRelasi LR, string matkul) { //Menghitung jumlah jurusan dari matkul
-    int count = 0;
-    Relasi *R = LR.first;
-    while (R) {
-        if (R->child->namaMatkul == matkul) count++;
-        R = R->next;
-    }
-    return count;
-}
+// Menghapus Jurusan beserta seluruh Mata Kuliahnya
+void deleteJurusan(ListParent &L, const string &jurusan) {
+    adrParent P = L.first;
+    adrParent prev = nullptr;
 
-int countMatkulNoParent(ListChild LC, ListRelasi LR) { //Menghitung matakuliah tanpa jurusan
-    int count = 0;
-    Child *C = LC.first;
-    while (C) {
-        bool ada = false;
-        Relasi *R = LR.first;
-        while (R) {
-            if (R->child == C) {
-                ada = true;
-                break;
-            }
-            R = R->next;
-        }
-        if (!ada) count++;
-        C = C->next;
-    }
-    return count;
-}
-
-int countJurusanNoChild(ListParent LP, ListRelasi LR) { //Menghitung jurusan tanpa mata kuliah
-    int count = 0;
-    Parent *P = LP.first;
-    while (P) {
-        bool ada = false;
-        Relasi *R = LR.first;
-        while (R) {
-            if (R->parent == P) {
-                ada = true;
-                break;
-            }
-            R = R->next;
-        }
-        if (!ada) count++;
+    while (P != nullptr && P->namaJurusan != jurusan) {
+        prev = P;
         P = P->next;
     }
+
+    if (P == nullptr) {
+        cout << "Jurusan tidak ditemukan.\n";
+        return;
+    }
+
+    // Menghapus seluruh Child milik Parent
+    adrChild C = P->firstChild;
+
+    while (C != nullptr) {
+        adrChild temp = C;
+        C = C->next;
+        delete temp;
+    }
+
+    // Menghapus Parent dari linked list
+    if (prev == nullptr) {
+        L.first = P->next;
+    } else {
+        prev->next = P->next;
+    }
+
+    delete P;
+
+    cout << "Jurusan beserta seluruh mata kuliahnya berhasil dihapus.\n";
+}
+
+// Mencari Relasi Jurusan dan Mata Kuliah
+bool findRelasi(ListParent L, const string &jurusan,
+                const string &matkul) {
+    adrParent P = findJurusan(L, jurusan);
+
+    return findMatkul(P, matkul) != nullptr;
+}
+
+// Menampilkan Semua Jurusan
+void showJurusan(ListParent L) {
+    if (L.first == nullptr) {
+        cout << "Belum ada jurusan yang terdaftar.\n";
+        return;
+    }
+
+    cout << "\n=== DAFTAR JURUSAN ===\n";
+
+    adrParent P = L.first;
+
+    while (P != nullptr) {
+        cout << "- " << P->namaJurusan << endl;
+        P = P->next;
+    }
+}
+
+// Menampilkan Mata Kuliah dari Jurusan
+void showMatkul(ListParent L, const string &jurusan) {
+    adrParent P = findJurusan(L, jurusan);
+
+    if (P == nullptr) {
+        cout << "Jurusan tidak ditemukan.\n";
+        return;
+    }
+
+    cout << "\nMata kuliah pada jurusan "
+         << P->namaJurusan << ":\n";
+
+    if (P->firstChild == nullptr) {
+        cout << "Belum memiliki mata kuliah.\n";
+        return;
+    }
+
+    adrChild C = P->firstChild;
+
+    while (C != nullptr) {
+        cout << "- " << C->namaMatkul << endl;
+        C = C->next;
+    }
+}
+
+// Menampilkan Mata Kuliah dari Jurusan
+void showMatkulFromJurusan(ListParent L, const string &jurusan) {
+    showMatkul(L, jurusan);
+}
+
+// Menampilkan Jurusan yang Memiliki Mata Kuliah
+void showJurusanFromMatkul(ListParent L, const string &matkul) {
+    if (L.first == nullptr) {
+        cout << "Belum ada data jurusan.\n";
+        return;
+    }
+
+    bool found = false;
+
+    cout << "\nJurusan yang memiliki mata kuliah "
+         << matkul << ":\n";
+
+    adrParent P = L.first;
+
+    while (P != nullptr) {
+        if (findMatkul(P, matkul) != nullptr) {
+            cout << "- " << P->namaJurusan << endl;
+            found = true;
+        }
+
+        P = P->next;
+    }
+
+    if (!found) {
+        cout << "Mata kuliah belum terdaftar pada jurusan mana pun.\n";
+    }
+}
+
+// Menampilkan Semua Jurusan dan Mata Kuliah
+void showAllJurusanMatkul(ListParent L) {
+    showAll(L);
+}
+
+// Menampilkan Semua Mata Kuliah beserta Jurusannya
+void showAllMatkulJurusan(ListParent L) {
+    if (L.first == nullptr) {
+        cout << "Belum ada data jurusan.\n";
+        return;
+    }
+
+    cout << "\n=== SEMUA MATA KULIAH DAN JURUSANNYA ===\n";
+
+    adrParent P = L.first;
+    bool any = false;
+
+    while (P != nullptr) {
+        adrChild C = P->firstChild;
+
+        while (C != nullptr) {
+            cout << C->namaMatkul << " - "
+                 << P->namaJurusan << endl;
+
+            any = true;
+            C = C->next;
+        }
+
+        P = P->next;
+    }
+
+    if (!any) {
+        cout << "Belum ada mata kuliah yang terdaftar.\n";
+    }
+}
+
+// Menampilkan Seluruh Data (Parent dan Child)
+void showAll(ListParent L) {
+    if (L.first == nullptr) {
+        cout << "Belum ada data jurusan.\n";
+        return;
+    }
+
+    cout << "\n=== SELURUH DATA JURUSAN DAN MATA KULIAH ===\n";
+
+    adrParent P = L.first;
+
+    while (P != nullptr) {
+        cout << "\nJurusan: " << P->namaJurusan << endl;
+
+        if (P->firstChild == nullptr) {
+            cout << "  Belum memiliki mata kuliah.\n";
+        } else {
+            adrChild C = P->firstChild;
+
+            while (C != nullptr) {
+                cout << "  - " << C->namaMatkul << endl;
+                C = C->next;
+            }
+        }
+
+        P = P->next;
+    }
+}
+
+// Menghitung Mata Kuliah pada Suatu Jurusan
+int countChildFromParent(ListParent L, const string &jurusan) {
+    adrParent P = findJurusan(L, jurusan);
+
+    if (P == nullptr) {
+        return -1;
+    }
+
+    int count = 0;
+    adrChild C = P->firstChild;
+
+    while (C != nullptr) {
+        count++;
+        C = C->next;
+    }
+
     return count;
 }
 
-void editRelasi(ListRelasi &LR, string oldJurusan, string oldMatkul, Parent *newP, Child *newC) { //Jika ingin mengedit relasi, jurusan dan matakuliah tersebut sudah harus terhubung memiliki relasi terlebih dahulu.
-    Relasi *R = LR.first;
-    while (R) {
-        if (R->parent->namaJurusan == oldJurusan &&
-            R->child->namaMatkul == oldMatkul) {
-            R->parent = newP;
-            R->child = newC;
-            cout << "Relasi berhasil diedit: "
-                 << newP->namaJurusan << " - "
-                 << newC->namaMatkul << endl;
-            return;
+// Menghitung Jumlah Jurusan yang Memiliki Mata Kuliah
+int countParentFromChild(ListParent L, const string &matkul) {
+    int count = 0;
+    adrParent P = L.first;
+
+    while (P != nullptr) {
+        if (findMatkul(P, matkul) != nullptr) {
+            count++;
         }
-        R = R->next;
+
+        P = P->next;
     }
-    cout << "Relasi tidak ditemukan" << endl;
+
+    return count;
 }
 
+// Menghitung Mata Kuliah Tanpa Jurusan
+int countMatkulNoParent(ListParent L) {
+    // Dalam model List to List, Child harus dimiliki Parent.
+    // Jadi tidak ada Child yang berdiri sendiri.
+    (void)L;
+    return 0;
+}
 
+// Menghitung Jurusan Tanpa Mata Kuliah
+int countJurusanNoChild(ListParent L) {
+    int count = 0;
+    adrParent P = L.first;
 
+    while (P != nullptr) {
+        if (P->firstChild == nullptr) {
+            count++;
+        }
 
+        P = P->next;
+    }
+
+    return count;
+}
+
+// Mengubah Relasi Jurusan dan Mata Kuliah
+void editRelasi(ListParent &L,
+                const string &oldJurusan,
+                const string &oldMatkul,
+                const string &newJurusan,
+                const string &newMatkul) {
+
+    adrParent oldP = findJurusan(L, oldJurusan);
+    adrParent newP = findJurusan(L, newJurusan);
+
+    if (oldP == nullptr) {
+        cout << "Jurusan lama tidak ditemukan.\n";
+        return;
+    }
+
+    if (newP == nullptr) {
+        cout << "Jurusan baru tidak ditemukan.\n";
+        return;
+    }
+
+    if (findMatkul(oldP, oldMatkul) == nullptr) {
+        cout << "Mata kuliah lama tidak ditemukan pada jurusan lama.\n";
+        return;
+    }
+
+    if (newMatkul.empty()) {
+        cout << "Nama mata kuliah baru tidak boleh kosong.\n";
+        return;
+    }
+
+    if (oldP == newP && oldMatkul == newMatkul) {
+        cout << "Data relasi tidak mengalami perubahan.\n";
+        return;
+    }
+
+    if (findMatkul(newP, newMatkul) != nullptr) {
+        cout << "Mata kuliah baru sudah terdaftar pada jurusan tujuan.\n";
+        return;
+    }
+
+    // Menghapus Child lama dari Parent asal
+    adrChild C = oldP->firstChild;
+    adrChild prev = nullptr;
+
+    while (C != nullptr && C->namaMatkul != oldMatkul) {
+        prev = C;
+        C = C->next;
+    }
+
+    if (prev == nullptr) {
+        oldP->firstChild = C->next;
+    } else {
+        prev->next = C->next;
+    }
+
+    delete C;
+
+    // Menambahkan Child baru ke Parent tujuan
+    adrChild newC = new Child;
+
+    newC->namaMatkul = newMatkul;
+    newC->next = newP->firstChild;
+
+    newP->firstChild = newC;
+
+    cout << "Data mata kuliah berhasil diperbarui.\n";
+}

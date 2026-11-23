@@ -28,41 +28,39 @@ struct ListParent {
 
 // Inisialisasi
 void createList(ListParent &L);
+bool isEmpty(ListParent L);
 
 // Operasi Parent
-void insertJurusan(ListParent &L, const string &jurusan);
-void deleteJurusan(ListParent &L, const string &jurusan);
-adrParent findJurusan(ListParent L, const string &jurusan);
+void insertJurusan(ListParent &L, string jurusan);
+void deleteJurusan(ListParent &L, string jurusan);
+void findJurusan(ListParent L, string jurusan, adrParent &P);
 void showJurusan(ListParent L);
 
 // Operasi Child
-void insertMatkul(ListParent &L, const string &jurusan,
-                  const string &matkul);
-void deleteMatkul(ListParent &L, const string &jurusan,
-                  const string &matkul);
-adrChild findMatkul(adrParent P, const string &matkul);
-void showMatkul(ListParent L, const string &jurusan);
+void insertMatkul(ListParent &L, string jurusan, string matkul);
+void deleteMatkul(ListParent &L, string jurusan, string matkul);
+void findMatkul(adrParent P, string matkul, adrChild &C);
+void showMatkul(ListParent L, string jurusan);
 
 // Operasi Relasi
-bool findRelasi(ListParent L, const string &jurusan,
-                const string &matkul);
-void showMatkulFromJurusan(ListParent L, const string &jurusan);
-void showJurusanFromMatkul(ListParent L, const string &matkul);
+bool findRelasi(ListParent L, string jurusan, string matkul);
+void showMatkulFromJurusan(ListParent L, string jurusan);
+void showJurusanFromMatkul(ListParent L, string matkul);
 void showAllJurusanMatkul(ListParent L);
 void showAllMatkulJurusan(ListParent L);
 void showAll(ListParent L);
 
 // Perhitungan
-int countChildFromParent(ListParent L, const string &jurusan);
-int countParentFromChild(ListParent L, const string &matkul);
+int countChildFromParent(ListParent L, string jurusan);
+int countParentFromChild(ListParent L, string matkul);
 int countMatkulNoParent(ListParent L);
 int countJurusanNoChild(ListParent L);
 
 // Edit Relasi
 void editRelasi(ListParent &L,
-                const string &oldJurusan,
-                const string &oldMatkul,
-                const string &newJurusan,
-                const string &newMatkul);
+                string oldJurusan,
+                string oldMatkul,
+                string newJurusan,
+                string newMatkul);
 
 #endif
